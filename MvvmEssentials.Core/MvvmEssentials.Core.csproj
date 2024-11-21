@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<PackageVersion>1.0.0.0</PackageVersion>
+		<Authors>Gurpreet Singh</Authors>
+		<Description>
+			Contains Basic needs for creating an application using MVVM(INotifyPropertyChanged  and ICommand Implementations).
+			Contains Contracts for a simple Navigation and Dialog services.
+		</Description>
+	</PropertyGroup>
+</Project>
