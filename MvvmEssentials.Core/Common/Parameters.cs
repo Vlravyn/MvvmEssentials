@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace MvvmEssentials.Core.Common
 {
@@ -8,10 +10,10 @@ namespace MvvmEssentials.Core.Common
     /// </summary>
     public class Parameters : IParameters
     {
-        private List<KeyValuePair<string, object>> pairs = new();
+        private List<KeyValuePair<string, object>> pairs = new List<KeyValuePair<string, object>>();
         public int Count => pairs.Count;
 
-        public IEnumerable<string> Keys => pairs.DistinctBy(pair => pair.Key).ToList().ConvertAll(pair => pair.Key).AsEnumerable();
+        public IEnumerable<string> Keys => pairs.Distinct().ToList().ConvertAll(pair => pair.Key).AsEnumerable();
 
         public void Add(string key, object value)
         {

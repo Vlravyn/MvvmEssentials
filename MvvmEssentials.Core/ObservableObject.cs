@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MvvmEssentials.Core
@@ -51,7 +53,8 @@ namespace MvvmEssentials.Core
         /// <exception cref="ArgumentNullException">thrown when the <paramref name="args"/> is null</exception>
         protected void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            ArgumentNullException.ThrowIfNull(args);
+            if(args == null)
+                throw new ArgumentNullException(nameof(args));
 
             PropertyChanged?.Invoke(this, args);
         }
@@ -72,7 +75,8 @@ namespace MvvmEssentials.Core
         /// <exception cref="ArgumentNullException">thrown when the <paramref name="args"/> is null</exception>
         protected void OnPropertyChanging(PropertyChangingEventArgs args)
         {
-            ArgumentNullException.ThrowIfNull(nameof(args));
+            if(args == null)
+                throw new ArgumentNullException(nameof(args));
 
             PropertyChanging?.Invoke(this, args);
         }

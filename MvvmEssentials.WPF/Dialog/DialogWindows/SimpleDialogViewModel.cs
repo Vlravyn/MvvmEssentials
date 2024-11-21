@@ -1,17 +1,18 @@
 ﻿using MvvmEssentials.Core;
 using MvvmEssentials.Core.Commands;
 using MvvmEssentials.Core.Dialog;
+using System;
+using System.Linq;
 using System.Windows;
 
 namespace MvvmEssentials.WPF.Dialog
 {
     internal class SimpleDialogViewModel : ObservableObject, IDialogAware
     {
-        private bool result;
         private string _button1Content;
         private string _button2Content;
         private string _text;
-        public object? Title { get; init; }
+        public object? Title { get; set; }
         public DialogResult DialogResult { get; set; }
 
         public object? Content { get; set; }

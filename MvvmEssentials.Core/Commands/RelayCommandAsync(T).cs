@@ -1,10 +1,15 @@
-﻿namespace MvvmEssentials.Core.Commands
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MvvmEssentials.Core.Commands
 {
     /// <summary>
     /// Asynchronous implementation of <see cref="RelayCommand{T}"/>
     /// </summary>
     /// <typeparam name="T">The type of parameter to pass to the methods</typeparam>
     public class RelayCommandAsync<T> : RelayCommandBaseAsync
+        where T : Type
     {
         private readonly Func<T, CancellationToken, Task> executeMethod;
 
@@ -45,7 +50,7 @@
 
             return base.CanExecute(commandParameter);
         }
-
+ 
         protected override async Task ExecuteAsync(object? parameter, CancellationToken token = default)
         {
             if (TryGetCommandParameter(parameter, out T? commandParameter) is false)

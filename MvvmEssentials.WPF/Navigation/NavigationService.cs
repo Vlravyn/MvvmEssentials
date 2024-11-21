@@ -1,5 +1,7 @@
 ﻿using MvvmEssentials.Core.Navigation;
 using MvvmEssentials.WPF.Dialog;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,13 +14,13 @@ namespace MvvmEssentials.WPF.Navigation
     {
         #region Private Members
 
-        private NavigationFrameStorer navigationFrameStorer;
+        private readonly NavigationFrameStorer navigationFrameStorer;
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// list of region contents that are active right now.
         /// </summary>
-        private List<FrameworkElement> activeRegionContent = new();
+        private readonly List<FrameworkElement> activeRegionContent = new();
 
         #endregion Private Members
 
@@ -44,7 +46,7 @@ namespace MvvmEssentials.WPF.Navigation
         public bool Navigate<T>(string regionName, T contentName, INavigationParameters parameters)
             where T : Enum
         {
-            if (typeof(T).HasAttribute<IsNavigationContentEnumAttribute>() is false)
+            if (!typeof(T).HasAttribute<IsNavigationContentEnumAttribute>())
                 throw new ArgumentOutOfRangeException("Invalid page type used for navigation");
 
             //Try to add regions of the active window if there are no registered regions found.
@@ -88,8 +90,8 @@ namespace MvvmEssentials.WPF.Navigation
                 newContentViewModel.OnNavigatedTo(parameters);
 
                 //Keep an instance of the views that have been opened for searching of frames to navigate
-                newContent.Loaded += (_, _) => activeRegionContent.Add(newContent);
-                newContent.Unloaded += (_, _) => activeRegionContent.Remove(newContent);
+                newContent.Loaded += (s, e) => activeRegionContent.Add(newContent);
+                newContent.Unloaded += (s, e) => activeRegionContent.Remove(newContent);
             }
 
             return result;

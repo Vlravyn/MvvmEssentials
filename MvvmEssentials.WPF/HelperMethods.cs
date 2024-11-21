@@ -1,5 +1,8 @@
 ﻿using MvvmEssentials.WPF.Navigation;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,7 +17,7 @@ namespace MvvmEssentials.WPF
         /// <param name="type">the type to check the attribute of</param>
         /// <typeparam name="T">The type of attribute to get</typeparam>
         /// <returns><see langword="true"/> if the type has the attribute <typeparamref name="T"/> attached to it</returns>
-        internal static bool HasAttribute<T>(this Type type)
+        public static bool HasAttribute<T>(this Type type)
             where T : Attribute
         {
             return Attribute.GetCustomAttribute(type, typeof(T)) != null;
@@ -26,7 +29,7 @@ namespace MvvmEssentials.WPF
         /// <typeparam name="T">the type of attribute to get</typeparam>
         /// <param name="value">the value whose attribute we need to get</param>
         /// <returns>the attribute. Returns null if attribute of given type is not assigned to the value</returns>
-        internal static T? GetAttribute<T>(this object value)
+        public static T? GetAttribute<T>(this object value)
             where T : Attribute, new()
         {
             if (value == null)
@@ -46,7 +49,7 @@ namespace MvvmEssentials.WPF
         /// <typeparam name="T">The type of the queried item.</typeparam>
         /// <param name="childName">x:Name or Name of child. </param>
         /// <returns>The first parent item that matches the submitted type parameter or null if not found</returns>
-        public static T FindChild<T>(DependencyObject parent, string childName)
+        internal static T FindChild<T>(DependencyObject parent, string childName)
            where T : DependencyObject
         {
             // Confirm parent and childName are valid.
@@ -96,7 +99,7 @@ namespace MvvmEssentials.WPF
         /// <typeparam name="T">the type of children to find</typeparam>
         /// <param name="parent">the parent control that holds the child controls</param>
         /// <returns>list of controls. Returns empty list when no control of specified type exists</returns>
-        public static IEnumerable<T> FindChildren<T>(DependencyObject depObj)
+        internal static IEnumerable<T> FindChildren<T>(DependencyObject depObj)
             where T : DependencyObject
         {
             if (depObj == null)

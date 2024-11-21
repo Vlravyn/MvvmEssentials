@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.WPF
+﻿using System;
+
+namespace MvvmEssentials.WPF
 {
     /// <summary>
     /// Use on the enum values to set which enum refers to which content

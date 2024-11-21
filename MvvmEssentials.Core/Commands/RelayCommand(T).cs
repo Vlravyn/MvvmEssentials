@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
 namespace MvvmEssentials.Core.Commands
 {
@@ -7,7 +8,6 @@ namespace MvvmEssentials.Core.Commands
     /// </summary>
     /// <typeparam name="T">the <see cref="Type"/> of parameter</typeparam>
     public class RelayCommand<T> : ICommand
-        where T : Type
     {
         public event EventHandler? CanExecuteChanged;
 

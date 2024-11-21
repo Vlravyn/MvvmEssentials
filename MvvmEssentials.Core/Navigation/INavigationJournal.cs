@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Navigation
+﻿using System.Collections.Generic;
+
+namespace MvvmEssentials.Core.Navigation
 {
     /// <summary>
     /// Contains all the journal entries

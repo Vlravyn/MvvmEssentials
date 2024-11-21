@@ -1,4 +1,6 @@
 ﻿using MvvmEssentials.Core.Navigation;
+using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
@@ -9,8 +11,8 @@ namespace MvvmEssentials.WPF.Navigation
     /// </summary>
     internal class NavigationFrameManager : INavigationRegionManager<Frame>
     {
-        private Stack<INavigationJournalEntry> goBackEntries = new();
-        private Stack<INavigationJournalEntry> goForwardEntries = new();
+        private readonly Stack<INavigationJournalEntry> goBackEntries = new();
+        private readonly Stack<INavigationJournalEntry> goForwardEntries = new();
 
         /// <summary>
         /// Default constructor

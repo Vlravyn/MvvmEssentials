@@ -1,4 +1,6 @@
 ﻿using MvvmEssentials.Core.Navigation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MvvmEssentials.WPF.Navigation
 {
@@ -7,15 +9,12 @@ namespace MvvmEssentials.WPF.Navigation
     /// </summary>
     internal class NavigationJournal : INavigationJournal
     {
-        private List<INavigationJournalEntry> entries = new();
+        private readonly List<INavigationJournalEntry> entries = new();
         public IEnumerable<INavigationJournalEntry> JournalEntries => entries.AsEnumerable();
 
         public void AddNewEntry(object navigationTarget)
         {
-            entries.Add(new NavigationJournalEntry()
-            {
-                Content = navigationTarget
-            });
+            entries.Add(new NavigationJournalEntry(navigationTarget));
         }
     }
 }

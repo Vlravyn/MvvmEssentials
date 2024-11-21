@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Dialog
+﻿using System;
+
+namespace MvvmEssentials.Core.Dialog
 {
     /// <summary>
     /// Allows opening dialogs with custom content.

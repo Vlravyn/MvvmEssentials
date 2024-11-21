@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Navigation
+﻿using System;
+
+namespace MvvmEssentials.Core.Navigation
 {
     /// <summary>
     /// Allows navigation to different views on the same window.

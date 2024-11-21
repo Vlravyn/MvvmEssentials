@@ -1,5 +1,8 @@
 ﻿using MvvmEssentials.Core;
 using MvvmEssentials.Core.Dialog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace MvvmEssentials.WPF.Dialog

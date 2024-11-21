@@ -5,8 +5,13 @@ namespace MvvmEssentials.WPF.Navigation
     /// <summary>
     /// Basic implementation of <see cref="INavigationJournalEntry"/>
     /// </summary>
-    internal record NavigationJournalEntry : INavigationJournalEntry
+    internal class NavigationJournalEntry : INavigationJournalEntry
     {
-        public required object Content { get; init; }
+        public object Content { get; private set; }
+
+        public NavigationJournalEntry(object content)
+        {
+            Content = content;
+        }
     }
 }

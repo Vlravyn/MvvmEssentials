@@ -1,6 +1,9 @@
 ﻿using MvvmEssentials.Core.Navigation;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -40,8 +43,11 @@ namespace MvvmEssentials.WPF.Navigation
 
         public void Add(string key, Frame value)
         {
-            ArgumentException.ThrowIfNullOrEmpty(key);
-            ArgumentNullException.ThrowIfNull(value);
+            if(string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+
+            if(value == null)
+                throw new ArgumentNullException(nameof(value));
 
             if (pairs.ContainsKey(key))
                 throw new ArgumentException("Frame NavigationName is already used");

@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core
+﻿using System;
+
+namespace MvvmEssentials.Core
 {
     /// <summary>
     /// Use on the enum values to set which enum refers to which content
