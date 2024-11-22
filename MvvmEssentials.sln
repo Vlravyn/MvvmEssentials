@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmEssentials.Core", "MvvmEssentials.Core\MvvmEssentials.Core.csproj", "{D26291A8-CF24-43DE-9C36-CCD0AA4E2EF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmEssentials.Navigation.WPF", "MVVMNavigation.WPF\MvvmEssentials.Navigation.WPF.csproj", "{91F13730-4111-4EF6-8D74-CC687568FB3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmEssentials.Navigation.WPF", "MvvmEssentials.Navigation.WPF\MvvmEssentials.Navigation.WPF.csproj", "{CF9B9A5E-9380-4343-8159-314FB9228AE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{D26291A8-CF24-43DE-9C36-CCD0AA4E2EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D26291A8-CF24-43DE-9C36-CCD0AA4E2EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D26291A8-CF24-43DE-9C36-CCD0AA4E2EF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91F13730-4111-4EF6-8D74-CC687568FB3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91F13730-4111-4EF6-8D74-CC687568FB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91F13730-4111-4EF6-8D74-CC687568FB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91F13730-4111-4EF6-8D74-CC687568FB3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF9B9A5E-9380-4343-8159-314FB9228AE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF9B9A5E-9380-4343-8159-314FB9228AE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF9B9A5E-9380-4343-8159-314FB9228AE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF9B9A5E-9380-4343-8159-314FB9228AE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
