@@ -1,7 +1,7 @@
 ﻿using MvvmEssentials.Core;
 using MvvmEssentials.Core.Dialog;
 
-namespace MvvmEssentials.WPF.Dialog
+namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 {
     internal class DefaultDialogHostViewModel : ObservableObject, IDialogAware
     {

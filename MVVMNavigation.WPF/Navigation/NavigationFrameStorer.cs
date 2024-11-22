@@ -1,4 +1,6 @@
 ﻿using MvvmEssentials.Core.Navigation;
+using MvvmEssentials.Navigation.WPF;
+using MvvmEssentials.WPF.Navigation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MvvmEssentials.WPF.Navigation
+namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
     /// Implementation of <see cref="INavigationRegionStorer{T}"/> for WPF <see cref="Frame"/> Navigation.
@@ -43,10 +45,10 @@ namespace MvvmEssentials.WPF.Navigation
 
         public void Add(string key, Frame value)
         {
-            if(string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
 
-            if(value == null)
+            if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
             if (pairs.ContainsKey(key))

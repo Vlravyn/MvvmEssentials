@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MvvmEssentials.WPF.Navigation
+namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
     /// The property to register the name of the frame.

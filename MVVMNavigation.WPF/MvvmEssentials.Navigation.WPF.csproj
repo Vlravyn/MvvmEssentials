@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Vlravyn/MvvmEssentials</PackageProjectUrl>
+    <Title>MvvmEssentials.Navigation.WPF</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MvvmEssentials.Core\MvvmEssentials.Core.csproj" />
+  </ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>MvvmEssentials.Navigation.WPF</PackageId>
+		<Authors>Gurpreet Singh</Authors>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Description>Contains Implmentation of INagivationService and IDialogService for WPF along with some helper methods.</Description>
+		<RepositoryUrl>https://github.com/Vlravyn/MvvmEssentials</RepositoryUrl>
+		<PackageTags>csharp, dotnet, netcore, wpf, mvvm</PackageTags>
+	</PropertyGroup>
+</Project>

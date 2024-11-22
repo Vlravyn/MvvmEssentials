@@ -1,6 +1,6 @@
 ﻿using MvvmEssentials.Core.Navigation;
 
-namespace MvvmEssentials.WPF.Navigation
+namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
     /// Basic implementation of <see cref="INavigationJournalEntry"/>

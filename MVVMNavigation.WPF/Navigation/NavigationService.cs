@@ -1,11 +1,12 @@
-﻿using MvvmEssentials.Core.Navigation;
-using MvvmEssentials.WPF.Dialog;
+﻿using MvvmEssentials.Core;
+using MvvmEssentials.Core.Navigation;
+using MvvmEssentials.Navigation.WPF.Dialog;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace MvvmEssentials.WPF.Navigation
+namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
     /// Implementation of <see cref="INavigationService"/> for WPF <see cref="Frame"/> navigation.

@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using MvvmEssentials.Navigation.WPF.Dialog.DialogWindows;
+using System.Windows;
 
-namespace MvvmEssentials.WPF.Dialog
+namespace MvvmEssentials.Navigation.WPF.Dialog
 {
     /// <summary>
     /// Interaction logic for DefaultDialogHostWindow.xaml

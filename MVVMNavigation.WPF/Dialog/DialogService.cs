@@ -1,11 +1,12 @@
 ﻿using MvvmEssentials.Core;
 using MvvmEssentials.Core.Dialog;
+using MvvmEssentials.Navigation.WPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace MvvmEssentials.WPF.Dialog
+namespace MvvmEssentials.Navigation.WPF.Dialog
 {
     public class DialogService : IDialogService
     {

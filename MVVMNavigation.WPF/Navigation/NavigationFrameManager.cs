@@ -1,10 +1,11 @@
 ﻿using MvvmEssentials.Core.Navigation;
+using MvvmEssentials.WPF.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace MvvmEssentials.WPF.Navigation
+namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
     /// Implementation of the <see cref="INavigationRegionManager{T}"/> for WPF <see cref="Frame"/> navigation.

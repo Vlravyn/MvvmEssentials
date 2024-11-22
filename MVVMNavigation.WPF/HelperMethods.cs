@@ -1,4 +1,4 @@
-﻿using MvvmEssentials.WPF.Navigation;
+﻿using MvvmEssentials.Navigation.WPF.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace MvvmEssentials.WPF
+namespace MvvmEssentials.Navigation.WPF
 {
     internal static class HelperMethods
     {

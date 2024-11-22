@@ -13,5 +13,9 @@
 			Contains Basic needs for creating an application using MVVM(INotifyPropertyChanged  and ICommand Implementations).
 			Contains Contracts for a simple Navigation and Dialog services.
 		</Description>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/Vlravyn/MvvmEssentials</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Vlravyn/MvvmEssentials</PackageProjectUrl>
+		<Title>MvvmEssentials</Title>
 	</PropertyGroup>
 </Project>

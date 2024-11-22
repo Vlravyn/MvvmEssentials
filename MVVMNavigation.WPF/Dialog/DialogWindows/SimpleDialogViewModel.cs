@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 
-namespace MvvmEssentials.WPF.Dialog
+namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 {
     internal class SimpleDialogViewModel : ObservableObject, IDialogAware
     {
