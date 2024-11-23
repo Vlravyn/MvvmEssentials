@@ -26,6 +26,7 @@
   </ItemGroup>
 
 	<PropertyGroup>
+		<PackageVersion>1.0.0</PackageVersion>
 		<PackageId>MvvmEssentials.Navigation.WPF</PackageId>
 		<Authors>Gurpreet Singh</Authors>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
