@@ -9,7 +9,6 @@ namespace MvvmEssentials.Core.Commands
     /// </summary>
     /// <typeparam name="T">The type of parameter to pass to the methods</typeparam>
     public class RelayCommandAsync<T> : RelayCommandBaseAsync
-        where T : Type
     {
         private readonly Func<T, CancellationToken, Task> executeMethod;
 
