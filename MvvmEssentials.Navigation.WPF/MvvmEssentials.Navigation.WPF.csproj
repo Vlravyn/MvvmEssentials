@@ -33,5 +33,6 @@
 		<Description>Contains Implmentation of INagivationService and IDialogService for WPF along with some helper methods.</Description>
 		<RepositoryUrl>https://github.com/Vlravyn/MvvmEssentials</RepositoryUrl>
 		<PackageTags>csharp, dotnet, netcore, wpf, mvvm</PackageTags>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 </Project>
