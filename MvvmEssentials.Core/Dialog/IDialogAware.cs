@@ -16,11 +16,6 @@
         DialogResult DialogResult { get; set; }
 
         /// <summary>
-        /// The content that this dialog will host.
-        /// </summary>
-        object? Content { get; set; }
-
-        /// <summary>
         /// Creates the parameters that the dialog will send back to the caller
         /// </summary>
         /// <returns>The parameters to send back to the viewmodel which opened the dialog</returns>
