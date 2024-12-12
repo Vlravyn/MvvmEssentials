@@ -124,26 +124,51 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             if (!customView.IsAssignableTo(typeof(Window)))
                 throw new ArgumentException("the passed in type must be a type of window");
 
-            var content = serviceProvider.GetService(customView) as Window;
-            if (content == null)
+            if (serviceProvider.GetService(customView) is not Window instance)
                 throw new Exception($"Could not get the type {customView.Name} from {nameof(IServiceProvider)}");
 
-            content.ShowDialog();
+            ActiveViews.Add(instance);
+            instance.ShowDialog();
 
             //getting the result from the dialog box
             DialogResult result = DialogResult.None;
 
-            //Calling the callback method when the dialog closes
-            if (content.DataContext is IDialogAware vm)
-            {
-                content.Closing += (_, _) =>
-                {
-                    vm.OnClosing();
-                    result = vm.DialogResult;
-                };
-                callbackMethod.Invoke(vm.ResultParameters());
-            }
+            var instanceViewModel = instance.DataContext as IDialogAware;
 
+            //setting the visibility to collapsed when window is closing instead of actually closing the window.
+            CancelEventHandler closingEvent;
+            closingEvent = (_, e) =>
+            {
+                if (instanceViewModel is not null)
+                {
+                    result = instanceViewModel.DialogResult;
+                    callbackMethod.Invoke(instanceViewModel.ResultParameters());
+
+                    instanceViewModel.OnClosing();
+                    ActiveViews.Remove(instance);
+                }
+
+                //this will close the application if the last instance is closed.
+                if (ActiveViews.Count == 0)
+                    instance.Close();
+                else
+                {
+                    //hiding the closed views since they can't be opened again if closed when registered.
+                    e.Cancel = true;
+                    instance.Visibility = Visibility.Collapsed;
+                }
+            };
+            instance.Closing += closingEvent;
+
+            //Using closed event to unsubscribe from the closing events.
+            EventHandler closedHandler = null;
+            closedHandler = (_, e) =>
+            {
+                instance.Closed -= closedHandler;
+                instance.Closing -= closingEvent;
+            };
+
+            instance.Closed += closedHandler;
             return result;
         }
 
