@@ -25,8 +25,15 @@
     <ProjectReference Include="..\MvvmEssentials.Core\MvvmEssentials.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
 	<PropertyGroup>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<PackageId>MvvmEssentials.Navigation.WPF</PackageId>
 		<Authors>Gurpreet Singh</Authors>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -34,5 +41,6 @@
 		<RepositoryUrl>https://github.com/Vlravyn/MvvmEssentials</RepositoryUrl>
 		<PackageTags>csharp, dotnet, netcore, wpf, mvvm</PackageTags>
 		<Version>1.0.2</Version>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	</PropertyGroup>
 </Project>

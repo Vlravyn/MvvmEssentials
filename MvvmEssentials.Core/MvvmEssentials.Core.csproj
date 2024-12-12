@@ -7,7 +7,7 @@
   </PropertyGroup>
 
 	<PropertyGroup>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<Authors>Gurpreet Singh</Authors>
 		<Description>
 			Contains Basic needs for creating an application using MVVM(INotifyPropertyChanged  and ICommand Implementations).
@@ -17,5 +17,14 @@
 		<RepositoryUrl>https://github.com/Vlravyn/MvvmEssentials</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Vlravyn/MvvmEssentials</PackageProjectUrl>
 		<Title>MvvmEssentials</Title>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Update="LICENSE.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 </Project>
