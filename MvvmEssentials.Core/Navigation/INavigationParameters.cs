@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Navigation
+﻿using MvvmEssentials.Core.Common;
+
+namespace MvvmEssentials.Core.Navigation
 {
     /// <summary>
     /// Specifies which parameters can be used to send data to the new view.

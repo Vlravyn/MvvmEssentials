@@ -1,8 +1,9 @@
 ﻿using MvvmEssentials.Core;
+using MvvmEssentials.Core.Common;
 using MvvmEssentials.Core.Dialog;
-using MvvmEssentials.Navigation.WPF;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 
@@ -34,31 +35,55 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             if (!viewType.IsAssignableTo(typeof(Window)))
                 throw new ArgumentException($"Cannot show a view which is not a type of {nameof(Window)}");
 
-            var instance = serviceProvider.GetService(viewType) as Window;
 
-            if (instance == null)
+            if (serviceProvider.GetService(viewType) is not Window instance)
                 throw new InvalidProgramException($"{viewType.Name} is not registered in the {nameof(IServiceProvider)}");
 
             ActiveViews.Add(instance);
             instance.Show();
 
-            if (instance.DataContext is IViewAware vm)
-            {
-                vm.OnViewOpened(parameters);
+            var instanceViewModel = instance.DataContext as IViewAware;
+            instanceViewModel?.OnOpened(parameters);
 
-                instance.Closing += (_, _) =>
+            //setting the visibility to collapsed when window is closing instead of actually closing the window.
+            CancelEventHandler closingEvent;
+            closingEvent = (_, e) =>
+            {
+                if (instanceViewModel is not null)
                 {
-                    vm.OnClosing();
+                    instanceViewModel.OnClosing();
                     ActiveViews.Remove(instance);
-                };
-            }
+                }
+
+                //this will close the application if the last instance is closed.
+                if (ActiveViews.Count == 0)
+                    instance.Close();
+                else
+                {
+                    //hiding the closed views since they can't be opened again if closed when registered.
+                    e.Cancel = true;
+                    instance.Visibility = Visibility.Collapsed;
+                }
+            };
+            instance.Closing += closingEvent;
+
+            //Using closed event to unsubscribe from the closing events.
+            EventHandler closedHandler = null;
+            closedHandler = (_, e) =>
+            {
+                instance.Closed -= closedHandler;
+                instance.Closing -= closingEvent;
+            };
+
+            instance.Closed += closedHandler;
+
         }
 
         public DialogResult ShowDialog<T>(T dialogContentType, IDialogParameters parameters, Action<IDialogParameters?> callbackMethod)
             where T : Enum
         {
             if (!typeof(T).HasAttribute<IsDialogContentEnumAttribute>())
-                throw new ArgumentException("enum which does not support dialog content navigation was passed in to the {IDialogService.Show}");
+                throw new ArgumentException($"enum which does not support dialog content navigation was passed in to the {nameof(IDialogService.ShowDialog)}");
 
             var attribute = dialogContentType.GetAttribute<NavigateToAttribute>();
 
@@ -85,10 +110,10 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             {
                 DefaultDialogHost.Closing += (_, _) =>
                 {
-                    vm.OnDialogClosing();
+                    vm.OnClosing();
                     result = vm.DialogResult;
                 };
-                callbackMethod.Invoke(vm.CreateDialogParameters());
+                callbackMethod.Invoke(vm.ResultParameters());
             }
 
             return result;
@@ -113,10 +138,10 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             {
                 content.Closing += (_, _) =>
                 {
-                    vm.OnDialogClosing();
+                    vm.OnClosing();
                     result = vm.DialogResult;
                 };
-                callbackMethod.Invoke(vm.CreateDialogParameters());
+                callbackMethod.Invoke(vm.ResultParameters());
             }
 
             return result;
@@ -150,7 +175,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
         {
             if (vm.DialogResult == DialogResult.Yes)
                 result = true;
-            vm.OnDialogClosing();
+            vm.OnClosing();
         }
     }
 }

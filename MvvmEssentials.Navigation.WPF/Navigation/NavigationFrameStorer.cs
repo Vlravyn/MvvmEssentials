@@ -1,6 +1,5 @@
 ﻿using MvvmEssentials.Core.Navigation;
 using MvvmEssentials.Navigation.WPF;
-using MvvmEssentials.WPF.Navigation;
 using System;
 using System.Collections;
 using System.Collections.Generic;

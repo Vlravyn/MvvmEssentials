@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MvvmEssentials.Core
+namespace MvvmEssentials.Core.Common
 {
     /// <summary>
     /// A basic interaface for storing parameters to send to other classes.

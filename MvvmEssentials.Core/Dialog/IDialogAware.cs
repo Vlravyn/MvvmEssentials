@@ -19,11 +19,11 @@
         /// Creates the parameters that the dialog will send back to the caller
         /// </summary>
         /// <returns>The parameters to send back to the viewmodel which opened the dialog</returns>
-        IDialogParameters? CreateDialogParameters();
+        IDialogParameters? ResultParameters();
 
         /// <summary>
-        /// Method to run before closing the dialog.
+        /// Run when the dialog is being closed.
         /// </summary>
-        void OnDialogClosing();
+        void OnClosing();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Dialog
+﻿using MvvmEssentials.Core.Common;
+
+namespace MvvmEssentials.Core.Dialog
 {
     /// <summary>
     /// Parameters to send to the dialog window.

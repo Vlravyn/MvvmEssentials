@@ -1,6 +1,4 @@
-﻿using MvvmEssentials.Core.Navigation;
-
-namespace MvvmEssentials.WPF.Navigation
+﻿namespace MvvmEssentials.Core.Navigation
 {
     /// <summary>
     /// Container for the region and stores past navigation data for going back/forward

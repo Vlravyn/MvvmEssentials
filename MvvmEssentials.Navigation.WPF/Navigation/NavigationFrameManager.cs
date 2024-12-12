@@ -1,5 +1,4 @@
 ﻿using MvvmEssentials.Core.Navigation;
-using MvvmEssentials.WPF.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;

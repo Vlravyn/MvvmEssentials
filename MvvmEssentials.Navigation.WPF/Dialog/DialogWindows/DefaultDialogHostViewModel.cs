@@ -53,12 +53,12 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 
         #endregion Constructors
 
-        public IDialogParameters CreateDialogParameters()
+        public IDialogParameters ResultParameters()
         {
             return new DialogParameters();
         }
 
-        public void OnDialogClosing()
+        public void OnClosing()
         {
         }
     }

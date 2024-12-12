@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Dialog
+﻿using MvvmEssentials.Core.Common;
+
+namespace MvvmEssentials.Core.Dialog
 {
     /// <summary>
     /// Makes the view model aware of view being opened and closed.
@@ -11,7 +13,7 @@
         /// Runs when the view is opened.
         /// </summary>
         /// <param name="parameters">the paramters the this view.</param>
-        void OnViewOpened(IParameters? parameters);
+        void OnOpened(IParameters? parameters);
 
         /// <summary>
         /// Runs when the view is closing.

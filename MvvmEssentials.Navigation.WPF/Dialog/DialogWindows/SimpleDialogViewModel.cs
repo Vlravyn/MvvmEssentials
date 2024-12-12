@@ -61,12 +61,12 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
                                 .ToString() ?? string.Empty;
         }
 
-        public IDialogParameters? CreateDialogParameters()
+        public IDialogParameters? ResultParameters()
         {
             return null;
         }
 
-        public void OnDialogClosing()
+        public void OnClosing()
         {
         }
     }
