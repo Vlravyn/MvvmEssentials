@@ -1,5 +1,6 @@
 ﻿using MvvmEssentials.Core;
 using MvvmEssentials.Core.Dialog;
+using System;
 
 namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 {
@@ -32,6 +33,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
             get => _content;
             set => SetProperty(ref _content, value);
         }
+        public Action Close { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion Public Properties
 
@@ -60,6 +62,11 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 
         public void OnClosing()
         {
+        }
+
+        public bool CanClose()
+        {
+            return true;
         }
     }
 }

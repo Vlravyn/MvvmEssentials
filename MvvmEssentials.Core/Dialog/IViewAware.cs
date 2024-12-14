@@ -1,5 +1,4 @@
 ﻿using MvvmEssentials.Core.Common;
-using System;
 
 namespace MvvmEssentials.Core.Dialog
 {

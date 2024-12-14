@@ -5,9 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MvvmEssentials.Navigation.WPF.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="window"
     Title="{Binding Title}"
     Width="800"
-    x:Name="window"
     Height="450"
     d:DataContext="{d:DesignInstance Type=local:SimpleDialogViewModel,
                                      IsDesignTimeCreatable=True}"
@@ -23,16 +23,17 @@
             FontSize="14"
             Text="{Binding Text}" />
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button
+                Click="Button_Click"
                 Command="{Binding Button1Command}"
                 CommandParameter="{Binding ElementName=window}"
-                Click="Button_Click"
-                Content="{Binding Button1Content}"/>
+                Content="{Binding Button1Content}" />
             <Button
+                Click="Button_Click"
                 Command="{Binding Button2Command}"
                 CommandParameter="{Binding ElementName=window}"
-                Content="{Binding Button2Content}" Click="Button_Click" />
+                Content="{Binding Button2Content}" />
         </StackPanel>
     </Grid>
 </Window>

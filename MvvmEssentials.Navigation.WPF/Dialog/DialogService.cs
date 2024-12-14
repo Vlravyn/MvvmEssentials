@@ -9,6 +9,10 @@ using System.Windows;
 
 namespace MvvmEssentials.Navigation.WPF.Dialog
 {
+    /// <summary>
+    /// Implementation of <see cref="IDialogService"/> for WPF.
+    /// Can be used to open <see cref="Window"/> as a new view or a dialog.
+    /// </summary>
     public class DialogService : IDialogService
     {
         private readonly IServiceProvider serviceProvider;
@@ -24,17 +28,23 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             private set => activeViews = value;
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="DialogService"/>
+        /// </summary>
+        /// <param name="Provider">The service provider for this application</param>
         public DialogService(IServiceProvider Provider)
         {
             serviceProvider = Provider;
             ActiveViews ??= new();
         }
 
+        ///<inheritdoc/>
+        /// <exception cref="ArgumentException">thrown when the <paramref name="viewType"/> is not a <see cref="Window"/></exception>
+        /// <exception cref="InvalidProgramException">thrown when type <paramref name="viewType"/> is not registered in the <see cref="IServiceProvider"/></exception>
         public void Show(Type viewType, IParameters? parameters = null)
         {
             if (!viewType.IsAssignableTo(typeof(Window)))
                 throw new ArgumentException($"Cannot show a view which is not a type of {nameof(Window)}");
-
 
             if (serviceProvider.GetService(viewType) is not Window instance)
                 throw new InvalidProgramException($"{viewType.Name} is not registered in the {nameof(IServiceProvider)}");
@@ -44,11 +54,11 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             var instanceViewModel = instance.DataContext as IViewAware;
 
-            if(instanceViewModel is not null)
+            if (instanceViewModel is not null)
             {
                 instanceViewModel.OnOpened(parameters);
 
-                Action closefromViewModelAction= null;
+                Action closefromViewModelAction = null;
                 closefromViewModelAction = () =>
                 {
                     instanceViewModel.OnClosing();
@@ -91,6 +101,9 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             instance.Closed += closedHandler;
         }
 
+        ///<inheritdoc/>
+        /// <exception cref="ArgumentException">thrown when the <typeparamref name="T"/> does not have <see cref="IsDialogContentEnumAttribute"/> attached to it.</exception>
+        /// <exception cref="Exception">thrown when the <see cref="NavigateToAttribute"/> is not assigned to the enum value.</exception>
         public DialogResult ShowDialog<T>(T dialogContentType, IDialogParameters parameters, Action<IDialogParameters?> callbackMethod)
             where T : Enum
         {
@@ -131,6 +144,9 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             return result;
         }
 
+        ///<inheritdoc/>
+        /// <exception cref="ArgumentException">thrown when the <paramref name="customView"/> is not a <see cref="Window"/></exception>
+        /// <exception cref="Exception">thrown when the dialog service could not get type <paramref name="customView"/> from <see cref="IServiceProvider"/></exception>
         public DialogResult ShowDialog(Type customView, IDialogParameters parameters, Action<IDialogParameters?> callbackMethod)
         {
             if (!customView.IsAssignableTo(typeof(Window)))
@@ -195,6 +211,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             return result;
         }
 
+        /// <inheritdoc/>
         public bool ShowSimpleDialog(string title, string content, string button1Content, string button2Content)
         {
             IDialogParameters parameters = new DialogParameters()
@@ -210,7 +227,12 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             IDialogAware vm = dialog.DataContext as IDialogAware;
             if (vm is not null)
             {
-                dialog.Closing += (_, _) => OnDialogClosing(vm);
+                dialog.Closing += (_, _) =>
+                {
+                    if (vm.DialogResult == DialogResult.Yes)
+                        result = true;
+                    vm.OnClosing();
+                };
             }
             dialog.ShowDialog();
 
@@ -218,12 +240,5 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
         }
 
         private bool result;
-
-        private void OnDialogClosing(IDialogAware vm)
-        {
-            if (vm.DialogResult == DialogResult.Yes)
-                result = true;
-            vm.OnClosing();
-        }
     }
 }

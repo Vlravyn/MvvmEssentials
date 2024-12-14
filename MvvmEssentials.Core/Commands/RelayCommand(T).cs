@@ -9,6 +9,7 @@ namespace MvvmEssentials.Core.Commands
     /// <typeparam name="T">the <see cref="Type"/> of parameter</typeparam>
     public class RelayCommand<T> : ICommand
     {
+        /// <inheritdoc/>
         public event EventHandler? CanExecuteChanged;
 
         private readonly Action<T?> executeMethod;
@@ -34,6 +35,12 @@ namespace MvvmEssentials.Core.Commands
             canExecuteMethod = canExecute;
         }
 
+        /// <summary>
+        /// Determines whether this command can be executed.
+        /// </summary>
+        /// <param name="parameter">the passed in parameters for this command</param>
+        /// <returns><see langword="true"/> if the command can be executed.</returns>
+        /// <exception cref="ArgumentException">thrown when the <paramref name="parameter"/> is not of type <typeparamref name="T"/></exception>
         public bool CanExecute(object? parameter)
         {
             if (TryGetCommandParameter(parameter, out T? commandParameter) is false)
@@ -42,6 +49,11 @@ namespace MvvmEssentials.Core.Commands
             return canExecuteMethod.Invoke(commandParameter);
         }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
+        /// <param name="parameter">the parameters for this command</param>
+        /// <exception cref="ArgumentException">thrown when the passed in parameter is not of type <typeparamref name="T"/></exception>
         public void Execute(object? parameter)
         {
             if (TryGetCommandParameter(parameter, out T? commandParameter) is false)
@@ -60,14 +72,13 @@ namespace MvvmEssentials.Core.Commands
         {
             convertedParameter = default;
 
-            if (parameter is null && default(T) is null)
-                return true;
-
             if (parameter is T argument)
             {
                 convertedParameter = argument;
                 return true;
             }
+            else if (parameter is null && default(T) is null)
+                return true;
 
             convertedParameter = default;
             return false;

@@ -13,17 +13,6 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
     {
         private readonly Stack<INavigationJournalEntry> goBackEntries = new();
         private readonly Stack<INavigationJournalEntry> goForwardEntries = new();
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="region">the frame to manage</param>
-        public NavigationFrameManager(Frame region)
-        {
-            Region = region;
-            Journal = new NavigationJournal();
-        }
-
         public INavigationJournal Journal { get; }
 
         public Frame Region { get; }
@@ -35,6 +24,18 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
         public object CurrentContent => Region.Content;
 
         public event EventHandler<NavigatedEventHandler> Navigated;
+
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="region">the frame to manage</param>
+        public NavigationFrameManager(Frame region)
+        {
+            Region = region;
+            Journal = new NavigationJournal();
+        }
+
 
         public bool Navigate(object content)
         {

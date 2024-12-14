@@ -9,9 +9,9 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 {
     internal class SimpleDialogViewModel : ObservableObject, IDialogAware
     {
-        private string _button1Content;
-        private string _button2Content;
-        private string _text;
+        private string _button1Content = string.Empty;
+        private string _button2Content = string.Empty;
+        private string _text = string.Empty;
         public object? Title { get; set; }
         public DialogResult DialogResult { get; set; }
 
@@ -35,15 +35,21 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
             set => SetProperty(ref _button2Content, value);
         }
 
-        public RelayCommand<Window> Button1Command => new RelayCommand<Window>((window) => ButtonClicked(DialogResult.Yes, window));
-        public RelayCommand<Window> Button2Command => new RelayCommand<Window>((window) => ButtonClicked(DialogResult.No, window));
+        public RelayCommand<Window> Button1Command => new((window) => ButtonClicked(DialogResult.Yes, window));
+        public RelayCommand<Window> Button2Command => new((window) => ButtonClicked(DialogResult.No, window));
 
-        private void ButtonClicked(DialogResult result, Window view)
+        public Action Close { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        private void ButtonClicked(DialogResult result, Window? view)
         {
             DialogResult = result;
-            view.Close();
+            view?.Close();
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="SimpleDialogViewModel"/>
+        /// </summary>
+        /// <param name="parameters">the parameters for this dialog.</param>
         public SimpleDialogViewModel(IDialogParameters parameters)
         {
             Title = parameters.FirstOrDefault(t => string.Equals(t.Key, "title", StringComparison.OrdinalIgnoreCase));
@@ -68,6 +74,11 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
 
         public void OnClosing()
         {
+        }
+
+        public bool CanClose()
+        {
+            return true;
         }
     }
 }

@@ -19,10 +19,22 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
             set => SetValue(NavigationNameProperty, value);
         }
 
+        /// <summary>
+        /// Dependency property for <see cref="NavigationName"/>
+        /// </summary>
         public static readonly DependencyProperty NavigationNameProperty = DependencyProperty.RegisterAttached(nameof(NavigationName), typeof(string), typeof(Frame), new PropertyMetadata());
 
+        /// <summary>
+        /// Setter method for dependency property <see cref="NavigationNameProperty"/>
+        /// </summary>
+        /// <param name="d">the frame whose attached property <see cref="NavigationNameProperty"/> value to set.</param>
+        /// <param name="value">the value to set to.</param>
         public static void SetNavigationName(DependencyObject d, string value) => d.SetValue(NavigationNameProperty, value);
 
+        /// <summary>
+        /// Getter method for dependency property <see cref="NavigationNameProperty"/>
+        /// </summary>
+        /// <param name="d">the frame whose attached property <see cref="NavigationNameProperty"/> value to get.</param>
         public static string GetNavigationName(DependencyObject d) => (string)d.GetValue(NavigationNameProperty);
     }
 }

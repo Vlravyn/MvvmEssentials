@@ -1,5 +1,4 @@
 ﻿using MvvmEssentials.Core.Navigation;
-using MvvmEssentials.Navigation.WPF;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
     /// Implementation of <see cref="INavigationRegionStorer{T}"/> for WPF <see cref="Frame"/> Navigation.
-    /// <inheritdoc />
     /// </summary>
     internal class NavigationFrameStorer : INavigationRegionStorer<INavigationRegionManager<Frame>>
     {
@@ -42,6 +40,13 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
 
         public bool IsReadOnly => false;
 
+        /// <summary>
+        /// Adds a new frame to the <see cref="NavigationFrameStorer"/>
+        /// </summary>
+        /// <param name="key">the key for this frame.</param>
+        /// <param name="value">the frame to store</param>
+        /// <exception cref="ArgumentNullException">throw when <paramref name="key"/> or <paramref name="value"/> is null</exception>
+        /// <exception cref="ArgumentException">thrown when they key is already being used.</exception>
         public void Add(string key, Frame value)
         {
             if (string.IsNullOrEmpty(key))
@@ -51,7 +56,7 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
                 throw new ArgumentNullException(nameof(value));
 
             if (pairs.ContainsKey(key))
-                throw new ArgumentException("Frame NavigationName is already used");
+                throw new ArgumentException("key is already used");
 
             pairs.Add(key, new NavigationFrameManager(value));
         }
@@ -62,6 +67,11 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
 
         public void Clear() => pairs.Clear();
 
+        /// <summary>
+        /// Determines whether the <see cref="ICollection{T}"/> already contains this specific key value pair.
+        /// </summary>
+        /// <param name="item">the key value pair to check</param>
+        /// <returns><see langword="true"/> if the key is already being used.</returns>
         public bool Contains(KeyValuePair<string, Frame> item)
         {
             if (pairs.TryGetValue(item.Key, out INavigationRegionManager<Frame>? value) && value.Region == item.Value)
@@ -74,6 +84,10 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
 
         public bool ContainsKey(string key) => pairs.ContainsKey(key);
 
+        /// <summary>
+        /// NOT IMPLEMENTED.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public void CopyTo(KeyValuePair<string, INavigationRegionManager<Frame>>[] array, int arrayIndex)
         {
             throw new NotImplementedException();
@@ -103,7 +117,7 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
                 return isAnyAdded;
             }
 
-            throw new ArgumentOutOfRangeException("Unknown type of control passed in to find the child navigation frames");
+            throw new Exception("Unknown type of control passed in to find the child navigation frames");
         }
 
         public IEnumerator<KeyValuePair<string, INavigationRegionManager<Frame>>> GetEnumerator()

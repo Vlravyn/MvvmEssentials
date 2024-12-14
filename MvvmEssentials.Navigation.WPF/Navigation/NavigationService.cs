@@ -98,7 +98,6 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
             return result;
         }
 
-
         /// <inheritdoc />
         /// <exception cref="ArgumentException">thrown when the frame with the specified region was not found.</exception>
         /// <exception cref="InvalidOperationException">thrown when the passed in <paramref name="viewType"/> is a <see cref="Window"/>.</exception>
@@ -139,6 +138,7 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
 
             return result;
         }
+
         /// <summary>
         /// Checks all the active views and adds them for navigation
         /// </summary>

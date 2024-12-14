@@ -41,6 +41,7 @@ namespace MvvmEssentials.Core.Commands
             this.executeMethod = executeMethod;
         }
 
+        /// <inheritdoc/>
         protected override async Task ExecuteAsync(object? parameters, CancellationToken token = default)
         {
             await executeMethod.Invoke(token);

@@ -1,6 +1,4 @@
-﻿using System.Threading.Channels;
-
-namespace MvvmEssentials.Core.Dialog
+﻿namespace MvvmEssentials.Core.Dialog
 {
     /// <summary>
     /// Specifies the required properties and method for the view model of a dialog.

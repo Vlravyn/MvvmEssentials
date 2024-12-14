@@ -9,6 +9,9 @@ using System.Windows.Media;
 
 namespace MvvmEssentials.Navigation.WPF
 {
+    /// <summary>
+    /// Coontains all the helper methods for this project.
+    /// </summary>
     internal static class HelperMethods
     {
         /// <summary>

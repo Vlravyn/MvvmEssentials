@@ -10,26 +10,34 @@ namespace MvvmEssentials.Core.Common
     /// </summary>
     public class Parameters : IParameters
     {
+        //internal list of parameters.
         private List<KeyValuePair<string, object>> pairs = new List<KeyValuePair<string, object>>();
+
+        /// <inheritdoc/>
         public int Count => pairs.Count;
 
+        /// <inheritdoc/>
         public IEnumerable<string> Keys => pairs.Distinct().ToList().ConvertAll(pair => pair.Key).AsEnumerable();
 
+        /// <inheritdoc/>
         public void Add(string key, object value)
         {
             pairs.Add(new KeyValuePair<string, object>(key, value));
         }
 
+        /// <inheritdoc/>
         public bool ContainsKey(string key)
         {
             return Keys.Contains(key);
         }
 
+        /// <inheritdoc/>
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             return pairs.GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public T GetValue<T>(string key)
         {
             var pair = pairs.Where(pair => pair.Key == key);
@@ -40,6 +48,7 @@ namespace MvvmEssentials.Core.Common
             return (T)pair.First().Value;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<T> GetValues<T>(string key)
         {
             var ps = pairs.Where(pair => pair.Key == key);
@@ -47,6 +56,7 @@ namespace MvvmEssentials.Core.Common
             return ps.ToList().ConvertAll(pair => (T)pair.Value).AsEnumerable();
         }
 
+        /// <inheritdoc/>
         public bool TryGetValue<T>(string key, [MaybeNullWhen(false)] out T value)
         {
             var pair = pairs.Where(pair => pair.Key == key && pair.GetType() == typeof(T));

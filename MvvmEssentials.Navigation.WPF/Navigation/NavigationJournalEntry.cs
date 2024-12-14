@@ -3,7 +3,7 @@
 namespace MvvmEssentials.Navigation.WPF.Navigation
 {
     /// <summary>
-    /// Basic implementation of <see cref="INavigationJournalEntry"/>
+    /// Implementation of <see cref="INavigationJournalEntry"/>
     /// </summary>
     internal class NavigationJournalEntry : INavigationJournalEntry
     {

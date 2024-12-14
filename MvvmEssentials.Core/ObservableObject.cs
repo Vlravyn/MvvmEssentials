@@ -10,8 +10,10 @@ namespace MvvmEssentials.Core
     /// </summary>
     public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        /// <inheritdoc/>
         public event PropertyChangingEventHandler? PropertyChanging;
 
+        /// <inheritdoc/>
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace MvvmEssentials.Core
         /// <exception cref="ArgumentNullException">thrown when the <paramref name="args"/> is null</exception>
         protected void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            if(args == null)
+            if (args == null)
                 throw new ArgumentNullException(nameof(args));
 
             PropertyChanged?.Invoke(this, args);
@@ -75,7 +77,7 @@ namespace MvvmEssentials.Core
         /// <exception cref="ArgumentNullException">thrown when the <paramref name="args"/> is null</exception>
         protected void OnPropertyChanging(PropertyChangingEventArgs args)
         {
-            if(args == null)
+            if (args == null)
                 throw new ArgumentNullException(nameof(args));
 
             PropertyChanging?.Invoke(this, args);

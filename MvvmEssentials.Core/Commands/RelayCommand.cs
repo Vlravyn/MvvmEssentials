@@ -8,6 +8,7 @@ namespace MvvmEssentials.Core.Commands
     /// </summary>
     public class RelayCommand : ICommand
     {
+        /// <inheritdoc/>
         public event EventHandler? CanExecuteChanged;
 
         private readonly Action executeMethod;
@@ -32,11 +33,18 @@ namespace MvvmEssentials.Core.Commands
             canExecuteMethod = canExecute;
         }
 
+        /// <summary>
+        /// Determines whether this command can be executed.
+        /// </summary>
+        /// <returns><see langword="true"/> if the command can be executed.</returns>
         public bool CanExecute(object? parameter)
         {
             return canExecuteMethod.Invoke();
         }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
         public void Execute(object? parameter)
         {
             executeMethod.Invoke();
