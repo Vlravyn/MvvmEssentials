@@ -27,7 +27,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
         public DialogService(IServiceProvider Provider)
         {
             serviceProvider = Provider;
-            ActiveViews = new();
+            ActiveViews ??= new();
         }
 
         public void Show(Type viewType, IParameters? parameters = null)
@@ -43,25 +43,38 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             instance.Show();
 
             var instanceViewModel = instance.DataContext as IViewAware;
-            instanceViewModel?.OnOpened(parameters);
+
+            if(instanceViewModel is not null)
+            {
+                instanceViewModel.OnOpened(parameters);
+
+                Action closefromViewModelAction= null;
+                closefromViewModelAction = () =>
+                {
+                    instanceViewModel.OnClosing();
+                    ActiveViews.Remove(instance);
+
+                    //hiding the closed views since they can't be opened again if closed when registered.
+                    instance.Visibility = Visibility.Collapsed;
+                    instanceViewModel.Close -= closefromViewModelAction;
+                };
+
+                instanceViewModel.Close += closefromViewModelAction;
+            }
 
             //setting the visibility to collapsed when window is closing instead of actually closing the window.
             CancelEventHandler closingEvent;
             closingEvent = (_, e) =>
             {
                 if (instanceViewModel is not null)
-                {
-                    instanceViewModel.OnClosing();
-                    ActiveViews.Remove(instance);
-                }
+                    e.Cancel = !instanceViewModel.CanClose();
 
                 //this will close the application if the last instance is closed.
-                if (ActiveViews.Count == 0)
-                    instance.Close();
-                else
+                if (e.Cancel is false && ActiveViews.All(window => window.Visibility == Visibility.Collapsed || window.Visibility == Visibility.Hidden))
+                    ActiveViews.ForEach(window => window.Close());
+                else if (e.Cancel is false)
                 {
                     //hiding the closed views since they can't be opened again if closed when registered.
-                    e.Cancel = true;
                     instance.Visibility = Visibility.Collapsed;
                 }
             };
@@ -76,7 +89,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             };
 
             instance.Closed += closedHandler;
-
         }
 
         public DialogResult ShowDialog<T>(T dialogContentType, IDialogParameters parameters, Action<IDialogParameters?> callbackMethod)
@@ -135,26 +147,37 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             var instanceViewModel = instance.DataContext as IDialogAware;
 
+            if (instanceViewModel is not null)
+            {
+                Action closefromViewModelAction = null;
+                closefromViewModelAction = () =>
+                {
+                    result = instanceViewModel.DialogResult;
+                    callbackMethod.Invoke(instanceViewModel.ResultParameters());
+                    instanceViewModel.OnClosing();
+                    ActiveViews.Remove(instance);
+
+                    //hiding the closed views since they can't be opened again if closed when registered.
+                    instance.Visibility = Visibility.Collapsed;
+                    instanceViewModel.Close -= closefromViewModelAction;
+                };
+
+                instanceViewModel.Close += closefromViewModelAction;
+            }
+
             //setting the visibility to collapsed when window is closing instead of actually closing the window.
             CancelEventHandler closingEvent;
             closingEvent = (_, e) =>
             {
                 if (instanceViewModel is not null)
-                {
-                    result = instanceViewModel.DialogResult;
-                    callbackMethod.Invoke(instanceViewModel.ResultParameters());
-
-                    instanceViewModel.OnClosing();
-                    ActiveViews.Remove(instance);
-                }
+                    e.Cancel = !instanceViewModel.CanClose();
 
                 //this will close the application if the last instance is closed.
-                if (ActiveViews.Count == 0)
-                    instance.Close();
-                else
+                if (e.Cancel is false && ActiveViews.All(window => window.Visibility == Visibility.Collapsed || window.Visibility == Visibility.Hidden))
+                    ActiveViews.ForEach(window => window.Close());
+                else if (e.Cancel is false)
                 {
                     //hiding the closed views since they can't be opened again if closed when registered.
-                    e.Cancel = true;
                     instance.Visibility = Visibility.Collapsed;
                 }
             };

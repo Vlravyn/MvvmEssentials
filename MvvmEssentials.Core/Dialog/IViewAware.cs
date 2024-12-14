@@ -1,4 +1,5 @@
 ﻿using MvvmEssentials.Core.Common;
+using System;
 
 namespace MvvmEssentials.Core.Dialog
 {
@@ -7,7 +8,7 @@ namespace MvvmEssentials.Core.Dialog
     /// Also allows accepting parameters when the view is opened.\
     /// Use this on the view model of the view that is not a dialog.
     /// </summary>
-    public interface IViewAware
+    public interface IViewAware : IClosable
     {
         /// <summary>
         /// Runs when the view is opened.

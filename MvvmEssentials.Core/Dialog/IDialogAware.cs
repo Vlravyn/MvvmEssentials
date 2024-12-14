@@ -1,9 +1,11 @@
-﻿namespace MvvmEssentials.Core.Dialog
+﻿using System.Threading.Channels;
+
+namespace MvvmEssentials.Core.Dialog
 {
     /// <summary>
     /// Specifies the required properties and method for the view model of a dialog.
     /// </summary>
-    public interface IDialogAware
+    public interface IDialogAware : IClosable
     {
         /// <summary>
         /// The title for this dialog
