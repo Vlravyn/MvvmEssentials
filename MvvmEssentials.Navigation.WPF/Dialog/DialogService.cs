@@ -18,7 +18,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
         private readonly IServiceProvider serviceProvider;
 
         private static List<Window> activeViews;
-
         /// <summary>
         /// Contains a list of all the views opened by the <see cref="IDialogService.Show(Type, IParameters?)"/>
         /// </summary>
@@ -27,6 +26,12 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             get => activeViews;
             private set => activeViews = value;
         }
+
+        /// <summary>
+        /// Contains the list of all the views that were opened by this service.
+        /// Does not store the default views that are defined in this project.(<see cref="DefaultDialogHostWindow"/> and <see cref="SimpleDialogWindow"/>)
+        /// </summary>
+        private static List<Window> allOpenedViews = new();
 
         /// <summary>
         /// Creates an w of <see cref="DialogService"/>
@@ -67,7 +72,8 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             }
             HandleCloseEvents(instance, instanceViewModel);
 
-
+            if (!allOpenedViews.Contains(instance))
+                allOpenedViews.Add(instance);
             ActiveViews.Add(instance);
             instance.Show();
 
@@ -123,10 +129,11 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
                 HandleCloseEvents(DefaultDialogHost, contentViewModel, false);
             }
-
+            if (!allOpenedViews.Contains(DefaultDialogHost))
+                allOpenedViews.Add(DefaultDialogHost);
             DefaultDialogHost.ShowDialog();
 
-
+            allOpenedViews.Remove(DefaultDialogHost);
             callbackMethod.Invoke(contentViewModel?.ResultParameters());
             return result;
         }
@@ -164,9 +171,12 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             HandleCloseEvents(instance, instanceViewModel);
 
+            if (!allOpenedViews.Contains(instance))
+                allOpenedViews.Add(instance);
             ActiveViews.Add(instance);
             instance.ShowDialog();
 
+            allOpenedViews.Remove(instance);
             callbackMethod.Invoke(instanceViewModel?.ResultParameters());
             return result;
         }
@@ -196,17 +206,22 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                     vm.OnClosing();
                 };
             }
+
+            if (!allOpenedViews.Contains(dialog))
+                allOpenedViews.Add(dialog);
             dialog.ShowDialog();
 
+            allOpenedViews.Remove(dialog);
             return result;
         }
 
+        private bool isClosingViews = false;
         /// <summary>
         /// Subscribes to the <see cref="Window.Closing"/> and <see cref="Window.Closed"/> events and uses <see cref="IClosable.CanClose"/> to determine whether the window should be closed.
         /// </summary>
         /// <param name="window">the window whose data context is inheriting from <see cref="IClosable"/></param>
         /// <param name="viewModel">the viewmodel that inherits from the <see cref="IClosable"/></param>
-        private static void HandleCloseEvents(Window window, IClosable? viewModel, bool isRegistered = true)
+        private void HandleCloseEvents(Window window, IClosable? viewModel, bool isRegistered = true)
         {
             //setting the visibility to collapsed when w is closing instead of actually closing the w.
             CancelEventHandler closingEvent;
@@ -217,20 +232,28 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                 //Handling w close event if not cancelled by now.
                 if (!e.Cancel)
                 {
-                    //this will close the application if the last w is closed.
-                    if (ActiveViews.All(w => w.Visibility != Visibility.Visible))
-                        ActiveViews.ForEach(w => w.Close());
-                    else
-                    {
-                        viewModel?.OnClosing();
+                    viewModel?.OnClosing();
 
-                        if (isRegistered)
-                        {
-                            //hiding the closed views since they can't be opened again if closed when registered.
-                            window.Visibility = Visibility.Collapsed;
-                            ActiveViews.Remove(window);
-                            e.Cancel = true;
-                        }
+                    if (isRegistered && isClosingViews is false)
+                    {
+                        //hiding the closed views since they can't be opened again if closed when registered.
+                        window.Visibility = Visibility.Collapsed;
+                        ActiveViews.Remove(window);
+                        e.Cancel = true;
+                    }
+
+                    //closes all the collapsed windows once the last window is closed.
+                    if(!ActiveViews.Any() && !isClosingViews && allOpenedViews.All(t => !t.IsVisible))
+                    {
+                        //remove this window from opened views since the closing event for this window is already fired.
+                        //just make sure this close event is not cancelled.
+                        allOpenedViews.Remove(window);
+                        e.Cancel = false;
+
+                        //closing all the collapsed views
+                        isClosingViews = true;
+                        allOpenedViews.ForEach(t => t.Close());
+                        isClosingViews = false;
                     }
                 }
             };
