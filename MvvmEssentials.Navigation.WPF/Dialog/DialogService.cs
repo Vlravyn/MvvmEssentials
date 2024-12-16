@@ -135,9 +135,10 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             DialogResult result = DialogResult.None;
 
             var instanceViewModel = instance.DataContext as IDialogAware;
-
             if (instanceViewModel is not null)
             {
+                instanceViewModel.OnOpened(parameters);
+
                 Action closefromViewModelAction = null;
                 closefromViewModelAction = () =>
                 {

@@ -80,5 +80,9 @@ namespace MvvmEssentials.Navigation.WPF.Dialog.DialogWindows
         {
             return true;
         }
+
+        public void OnOpened(IDialogParameters? parameters)
+        {
+        }
     }
 }

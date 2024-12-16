@@ -1,4 +1,6 @@
-﻿namespace MvvmEssentials.Core.Dialog
+﻿using MvvmEssentials.Core.Common;
+
+namespace MvvmEssentials.Core.Dialog
 {
     /// <summary>
     /// Specifies the required properties and method for the view model of a dialog.
@@ -20,6 +22,12 @@
         /// </summary>
         /// <returns>The parameters to send back to the viewmodel which opened the dialog</returns>
         IDialogParameters? ResultParameters();
+
+        /// <summary>
+        /// Runs when the dialog is opened.
+        /// </summary>
+        /// <param name="parameters">the parameters</param>
+        void OnOpened(IDialogParameters? parameters);
 
         /// <summary>
         /// Run when the dialog is being closed.
