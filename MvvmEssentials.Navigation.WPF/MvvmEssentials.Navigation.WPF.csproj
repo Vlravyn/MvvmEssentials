@@ -37,7 +37,7 @@
   </ItemGroup>
 
 	<PropertyGroup>
-		<PackageVersion>1.0.5</PackageVersion>
+		<PackageVersion>1.0.5.1</PackageVersion>
 		<PackageId>MvvmEssentials.Navigation.WPF</PackageId>
 		<Authors>Gurpreet Singh</Authors>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
