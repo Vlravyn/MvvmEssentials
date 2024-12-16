@@ -28,10 +28,5 @@ namespace MvvmEssentials.Core.Dialog
         /// </summary>
         /// <param name="parameters">the parameters</param>
         void OnOpened(IDialogParameters? parameters);
-
-        /// <summary>
-        /// Run when the dialog is being closed.
-        /// </summary>
-        void OnClosing();
     }
 }

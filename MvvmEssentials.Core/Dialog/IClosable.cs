@@ -17,5 +17,10 @@ namespace MvvmEssentials.Core.Dialog
         /// </summary>
         /// <returns><see langword="true"/> if the view can be closed.</returns>
         bool CanClose();
+
+        /// <summary>
+        /// Run when the dialog is being closed.
+        /// </summary>
+        void OnClosing();
     }
 }

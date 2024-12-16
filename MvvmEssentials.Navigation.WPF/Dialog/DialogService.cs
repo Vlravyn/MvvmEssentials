@@ -49,9 +49,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             if (serviceProvider.GetService(viewType) is not Window instance)
                 throw new InvalidProgramException($"{viewType.Name} is not registered in the {nameof(IServiceProvider)}");
 
-            ActiveViews.Add(instance);
-            instance.Show();
-
             var instanceViewModel = instance.DataContext as IViewAware;
 
             if (instanceViewModel is not null)
@@ -61,8 +58,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                 Action closefromViewModelAction = null;
                 closefromViewModelAction = () =>
                 {
-                    instanceViewModel.OnClosing();
-                    ActiveViews.Remove(instance);
                     instance.Close();
 
                     instanceViewModel.Close -= closefromViewModelAction;
@@ -70,8 +65,12 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
                 instanceViewModel.Close += closefromViewModelAction;
             }
-
             HandleCloseEvents(instance, instanceViewModel);
+
+
+            ActiveViews.Add(instance);
+            instance.Show();
+
         }
 
         ///<inheritdoc/>
@@ -98,21 +97,30 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             //show persistent dialog w
             var DefaultDialogHost = new DefaultDialogHostWindow(title, content);
-            DefaultDialogHost.ShowDialog();
 
             //getting the result from the dialog box
             DialogResult result = DialogResult.None;
 
             //Calling the callback method when the dialog closes
-            if (DefaultDialogHost.DataContext is IDialogAware vm)
+            if (content is FrameworkElement fe && fe.DataContext is IDialogAware contentViewModel)
             {
-                DefaultDialogHost.Closing += (_, _) =>
+                contentViewModel.OnOpened(parameters);
+
+                Action closefromViewModelAction = null;
+                closefromViewModelAction = () =>
                 {
-                    vm.OnClosing();
-                    result = vm.DialogResult;
+                    result = contentViewModel.DialogResult;
+                    DefaultDialogHost.Close();
+
+                    contentViewModel.Close -= closefromViewModelAction;
                 };
-                callbackMethod.Invoke(vm.ResultParameters());
+
+                contentViewModel.Close += closefromViewModelAction;
+
+                HandleCloseEvents(DefaultDialogHost, contentViewModel, false);
             }
+
+            DefaultDialogHost.ShowDialog();
 
             return result;
         }
@@ -128,9 +136,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             if (serviceProvider.GetService(customView) is not Window instance)
                 throw new Exception($"Could not get the type {customView.Name} from {nameof(IServiceProvider)}");
 
-            ActiveViews.Add(instance);
-            instance.ShowDialog();
-
             //getting the result from the dialog box
             DialogResult result = DialogResult.None;
 
@@ -143,13 +148,8 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                 closefromViewModelAction = () =>
                 {
                     result = instanceViewModel.DialogResult;
-                    callbackMethod.Invoke(instanceViewModel.ResultParameters());
-                    instanceViewModel.OnClosing();
-                    ActiveViews.Remove(instance);
                     instance.Close();
 
-                    //hiding the closed views since they can't be opened again if closed when registered.
-                    instance.Visibility = Visibility.Collapsed;
                     instanceViewModel.Close -= closefromViewModelAction;
                 };
 
@@ -157,6 +157,9 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             }
 
             HandleCloseEvents(instance, instanceViewModel);
+
+            ActiveViews.Add(instance);
+            instance.ShowDialog();
 
             return result;
         }
@@ -196,7 +199,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
         /// </summary>
         /// <param name="window">the window whose data context is inheriting from <see cref="IClosable"/></param>
         /// <param name="viewModel">the viewmodel that inherits from the <see cref="IClosable"/></param>
-        private static void HandleCloseEvents(Window window, IClosable? viewModel)
+        private static void HandleCloseEvents(Window window, IClosable? viewModel, bool isRegistered = true)
         {
             //setting the visibility to collapsed when w is closing instead of actually closing the w.
             CancelEventHandler closingEvent;
@@ -212,9 +215,15 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                         ActiveViews.ForEach(w => w.Close());
                     else
                     {
-                        //hiding the closed views since they can't be opened again if closed when registered.
-                        window.Visibility = Visibility.Collapsed;
-                        e.Cancel = true;
+                        viewModel?.OnClosing();
+
+                        if (isRegistered)
+                        {
+                            //hiding the closed views since they can't be opened again if closed when registered.
+                            window.Visibility = Visibility.Collapsed;
+                            ActiveViews.Remove(window);
+                            e.Cancel = true;
+                        }
                     }
                 }
             };
