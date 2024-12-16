@@ -37,14 +37,14 @@
   </ItemGroup>
 
 	<PropertyGroup>
-		<PackageVersion>1.0.4.1</PackageVersion>
+		<PackageVersion>1.0.5</PackageVersion>
 		<PackageId>MvvmEssentials.Navigation.WPF</PackageId>
 		<Authors>Gurpreet Singh</Authors>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>Contains Implmentation of INagivationService and IDialogService for WPF along with some helper methods.</Description>
 		<RepositoryUrl>https://github.com/Vlravyn/MvvmEssentials</RepositoryUrl>
 		<PackageTags>csharp, dotnet, netcore, wpf, mvvm</PackageTags>
-		<Version>1.0.4.1</Version>
+		<Version>1.0.5</Version>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
