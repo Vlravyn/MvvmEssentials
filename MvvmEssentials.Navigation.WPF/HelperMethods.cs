@@ -35,14 +35,15 @@ namespace MvvmEssentials.Navigation.WPF
         public static T? GetAttribute<T>(this object value)
             where T : Attribute, new()
         {
-            if (value == null)
-                return null;
+            if (value is not null)
+            {
+                var type = value.GetType();
+                var memInfo = type.GetMember(value.ToString());
+                var attribute = memInfo[0].GetCustomAttributes(typeof(T), false).FirstOrDefault();
+                return (T?)attribute;
+            }
 
-            var type = value.GetType();
-            var memInfo = type.GetMember(value.ToString());
-            var attribute = memInfo[0].GetCustomAttributes(typeof(T), false).FirstOrDefault();
-
-            return (T?)attribute;
+            return null;
         }
 
         /// <summary>
@@ -56,7 +57,8 @@ namespace MvvmEssentials.Navigation.WPF
            where T : DependencyObject
         {
             // Confirm parent and childName are valid.
-            if (parent == null) return null;
+            if (parent == null)
+                return null;
 
             T foundChild = null;
 
@@ -64,21 +66,21 @@ namespace MvvmEssentials.Navigation.WPF
             for (int i = 0; i < childrenCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
+
                 // If the child is not of the request child type child
-                T childType = child as T;
-                if (childType == null)
+                if (child is not T)
                 {
                     // recursively drill down the tree
                     foundChild = FindChild<T>(child, childName);
 
                     // If the child is found, break so we do not overwrite the found child.
-                    if (foundChild != null) break;
+                    if (foundChild != null)
+                        break;
                 }
                 else if (!string.IsNullOrEmpty(childName))
                 {
-                    var frameworkElement = child as FrameworkElement;
                     // If the child's name is set for search
-                    if (frameworkElement != null && frameworkElement.Name == childName)
+                    if (child is FrameworkElement frameworkElement && frameworkElement.Name == childName)
                     {
                         // if the child's name is of the request name
                         foundChild = (T)child;
@@ -100,7 +102,6 @@ namespace MvvmEssentials.Navigation.WPF
         /// Finds all the children of control with a specific type
         /// </summary>
         /// <typeparam name="T">the type of children to find</typeparam>
-        /// <param name="parent">the parent control that holds the child controls</param>
         /// <returns>list of controls. Returns empty list when no control of specified type exists</returns>
         internal static IEnumerable<T> FindChildren<T>(DependencyObject depObj)
             where T : DependencyObject
@@ -136,17 +137,17 @@ namespace MvvmEssentials.Navigation.WPF
             if (frames == null)
                 return new List<Frame>().AsEnumerable();
 
-            if (frames.Count() == 0)
+            if (!frames.Any())
                 return new List<Frame>().AsEnumerable();
 
             foreach (var frame in frames)
             {
-                if (frame == null)
-                    continue;
-
-                var nameValue = frame.GetValue(NavigationNamesAP.NavigationNameProperty);
-                if (nameValue != null)
-                    navigationFrames.Add(frame);
+                if (frame is not null)
+                {
+                    var nameValue = frame.GetValue(NavigationNamesAP.NavigationNameProperty);
+                    if (nameValue != null)
+                        navigationFrames.Add(frame);
+                }
             }
 
             return navigationFrames;

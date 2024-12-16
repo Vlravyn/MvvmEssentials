@@ -29,7 +29,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="DialogService"/>
+        /// Creates an w of <see cref="DialogService"/>
         /// </summary>
         /// <param name="Provider">The service provider for this application</param>
         public DialogService(IServiceProvider Provider)
@@ -63,42 +63,15 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                 {
                     instanceViewModel.OnClosing();
                     ActiveViews.Remove(instance);
+                    instance.Close();
 
-                    //hiding the closed views since they can't be opened again if closed when registered.
-                    instance.Visibility = Visibility.Collapsed;
                     instanceViewModel.Close -= closefromViewModelAction;
                 };
 
                 instanceViewModel.Close += closefromViewModelAction;
             }
 
-            //setting the visibility to collapsed when window is closing instead of actually closing the window.
-            CancelEventHandler closingEvent;
-            closingEvent = (_, e) =>
-            {
-                if (instanceViewModel is not null)
-                    e.Cancel = !instanceViewModel.CanClose();
-
-                //this will close the application if the last instance is closed.
-                if (e.Cancel is false && ActiveViews.All(window => window.Visibility == Visibility.Collapsed || window.Visibility == Visibility.Hidden))
-                    ActiveViews.ForEach(window => window.Close());
-                else if (e.Cancel is false)
-                {
-                    //hiding the closed views since they can't be opened again if closed when registered.
-                    instance.Visibility = Visibility.Collapsed;
-                }
-            };
-            instance.Closing += closingEvent;
-
-            //Using closed event to unsubscribe from the closing events.
-            EventHandler closedHandler = null;
-            closedHandler = (_, e) =>
-            {
-                instance.Closed -= closedHandler;
-                instance.Closing -= closingEvent;
-            };
-
-            instance.Closed += closedHandler;
+            HandleCloseEvents(instance, instanceViewModel);
         }
 
         ///<inheritdoc/>
@@ -113,7 +86,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             var attribute = dialogContentType.GetAttribute<NavigateToAttribute>();
 
             if (attribute == null)
-                throw new Exception($"{dialogContentType.ToString()} does not have {nameof(NavigateToAttribute)} attached to it");
+                throw new Exception($"{dialogContentType} does not have {nameof(NavigateToAttribute)} attached to it");
 
             var content = serviceProvider.GetService(attribute.DestinationType);
 
@@ -123,7 +96,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             if (parameters != null && parameters.Count != 0)
                 title = parameters.FirstOrDefault(t => string.Equals(t.Key, "title", StringComparison.OrdinalIgnoreCase)).Value;
 
-            //show persistent dialog window
+            //show persistent dialog w
             var DefaultDialogHost = new DefaultDialogHostWindow(title, content);
             DefaultDialogHost.ShowDialog();
 
@@ -172,6 +145,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                     callbackMethod.Invoke(instanceViewModel.ResultParameters());
                     instanceViewModel.OnClosing();
                     ActiveViews.Remove(instance);
+                    instance.Close();
 
                     //hiding the closed views since they can't be opened again if closed when registered.
                     instance.Visibility = Visibility.Collapsed;
@@ -181,39 +155,16 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
                 instanceViewModel.Close += closefromViewModelAction;
             }
 
-            //setting the visibility to collapsed when window is closing instead of actually closing the window.
-            CancelEventHandler closingEvent;
-            closingEvent = (_, e) =>
-            {
-                if (instanceViewModel is not null)
-                    e.Cancel = !instanceViewModel.CanClose();
+            HandleCloseEvents(instance, instanceViewModel);
 
-                //this will close the application if the last instance is closed.
-                if (e.Cancel is false && ActiveViews.All(window => window.Visibility == Visibility.Collapsed || window.Visibility == Visibility.Hidden))
-                    ActiveViews.ForEach(window => window.Close());
-                else if (e.Cancel is false)
-                {
-                    //hiding the closed views since they can't be opened again if closed when registered.
-                    instance.Visibility = Visibility.Collapsed;
-                }
-            };
-            instance.Closing += closingEvent;
-
-            //Using closed event to unsubscribe from the closing events.
-            EventHandler closedHandler = null;
-            closedHandler = (_, e) =>
-            {
-                instance.Closed -= closedHandler;
-                instance.Closing -= closingEvent;
-            };
-
-            instance.Closed += closedHandler;
             return result;
         }
 
         /// <inheritdoc/>
         public bool ShowSimpleDialog(string title, string content, string button1Content, string button2Content)
         {
+            //This method is hard coded to work with <see cref="SimpleDialogWindow"/>.
+            // Re-implement this method if the dialog window is updated in the future.
             IDialogParameters parameters = new DialogParameters()
             {
                 {"title", title },
@@ -223,9 +174,9 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             };
 
             var dialog = new SimpleDialogWindow(parameters);
+            bool result = false;
 
-            IDialogAware vm = dialog.DataContext as IDialogAware;
-            if (vm is not null)
+            if (dialog.DataContext is IDialogAware vm)
             {
                 dialog.Closing += (_, _) =>
                 {
@@ -239,6 +190,44 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             return result;
         }
 
-        private bool result;
+        /// <summary>
+        /// Subscribes to the <see cref="Window.Closing"/> and <see cref="Window.Closed"/> events and uses <see cref="IClosable.CanClose"/> to determine whether the window should be closed.
+        /// </summary>
+        /// <param name="window">the window whose data context is inheriting from <see cref="IClosable"/></param>
+        /// <param name="viewModel">the viewmodel that inherits from the <see cref="IClosable"/></param>
+        private static void HandleCloseEvents(Window window, IClosable? viewModel)
+        {
+            //setting the visibility to collapsed when w is closing instead of actually closing the w.
+            CancelEventHandler closingEvent;
+            closingEvent = (_, e) =>
+            {
+                e.Cancel = !viewModel?.CanClose() ?? false;
+
+                //Handling w close event if not cancelled by now.
+                if (!e.Cancel)
+                {
+                    //this will close the application if the last w is closed.
+                    if (ActiveViews.All(w => w.Visibility != Visibility.Visible))
+                        ActiveViews.ForEach(w => w.Close());
+                    else
+                    {
+                        //hiding the closed views since they can't be opened again if closed when registered.
+                        window.Visibility = Visibility.Collapsed;
+                        e.Cancel = true;
+                    }
+                }
+            };
+            window.Closing += closingEvent;
+
+            //Using closed event to unsubscribe from the closing events.
+            EventHandler closedHandler = null;
+            closedHandler = (_, e) =>
+            {
+                window.Closed -= closedHandler;
+                window.Closing -= closingEvent;
+            };
+
+            window.Closed += closedHandler;
+        }
     }
 }

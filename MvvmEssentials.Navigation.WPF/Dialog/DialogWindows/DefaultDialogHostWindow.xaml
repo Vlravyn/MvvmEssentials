@@ -3,10 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogwindows="clr-namespace:MvvmEssentials.Navigation.WPF.Dialog.DialogWindows"
     xmlns:local="clr-namespace:MvvmEssentials.Navigation.WPF.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="{Binding Title}"
-    d:DataContext="{d:DesignInstance Type=local:DefaultDialogHostViewModel,
+    d:DataContext="{d:DesignInstance Type=dialogwindows:DefaultDialogHostViewModel,
                                      IsDesignTimeCreatable=True}"
     x:ClassModifier="internal"
     SizeToContent="WidthAndHeight"

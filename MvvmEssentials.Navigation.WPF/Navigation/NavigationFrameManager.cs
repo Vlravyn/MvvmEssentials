@@ -23,8 +23,6 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
 
         public object CurrentContent => Region.Content;
 
-        public event EventHandler<NavigatedEventHandler> Navigated;
-
 
         /// <summary>
         /// Default constructor
@@ -35,7 +33,6 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
             Region = region;
             Journal = new NavigationJournal();
         }
-
 
         public bool Navigate(object content)
         {

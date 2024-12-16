@@ -3,6 +3,7 @@ using MvvmEssentials.Core.Navigation;
 using MvvmEssentials.Navigation.WPF.Dialog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -51,10 +52,10 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
                 throw new ArgumentOutOfRangeException(nameof(contentName), "Invalid page type used for navigation");
 
             //Try to add regions of the active window if there are no registered regions found.
-            if (navigationFrameStorer.Count == 0)
+            if (!navigationFrameStorer.Any())
                 CheckAndUpdateAllViewsForNavigationRegions();
 
-            if (navigationFrameStorer.Count == 0)
+            if (!navigationFrameStorer.Any())
                 return false;
 
             navigationFrameStorer.TryGetValue(regionName, out var frameManager);
@@ -104,10 +105,10 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
         public bool Navigate(string regionName, Type viewType, INavigationParameters parameters)
         {
             //Try to add regions of the active window if there are no registered regions found.
-            if (navigationFrameStorer.Count == 0)
+            if (!navigationFrameStorer.Any())
                 CheckAndUpdateAllViewsForNavigationRegions();
 
-            if (navigationFrameStorer.Count == 0)
+            if (!navigationFrameStorer.Any())
                 return false;
 
             navigationFrameStorer.TryGetValue(regionName, out var frameManager);
@@ -152,7 +153,7 @@ namespace MvvmEssentials.Navigation.WPF.Navigation
         /// <exception cref="InvalidOperationException">thrwn when the stored region list in the navigation service is empty or the service could not find the region</exception>
         public void NavigateBack(string regionName)
         {
-            if (navigationFrameStorer.Count == 0)
+            if (!navigationFrameStorer.Any())
                 throw new InvalidOperationException("Cannot navigate back on a region because no regions are stored in the navigation service.");
 
             navigationFrameStorer.TryGetValue(regionName, out var frameManager);
