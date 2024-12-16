@@ -176,7 +176,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             ActiveViews.Add(instance);
             instance.ShowDialog();
 
-            allOpenedViews.Remove(instance);
             callbackMethod.Invoke(instanceViewModel?.ResultParameters());
             return result;
         }
