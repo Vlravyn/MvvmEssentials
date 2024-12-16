@@ -102,7 +102,11 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             DialogResult result = DialogResult.None;
 
             //Calling the callback method when the dialog closes
-            if (content is FrameworkElement fe && fe.DataContext is IDialogAware contentViewModel)
+            var fe = content as FrameworkElement;
+
+            var contentViewModel = fe?.DataContext as IDialogAware;
+
+            if (contentViewModel is not null)
             {
                 contentViewModel.OnOpened(parameters);
 
@@ -122,6 +126,8 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             DefaultDialogHost.ShowDialog();
 
+
+            callbackMethod.Invoke(contentViewModel?.ResultParameters());
             return result;
         }
 
@@ -161,6 +167,7 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
             ActiveViews.Add(instance);
             instance.ShowDialog();
 
+            callbackMethod.Invoke(instanceViewModel?.ResultParameters());
             return result;
         }
 
