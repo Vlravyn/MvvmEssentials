@@ -9,6 +9,7 @@
     Title="{Binding Title}"
     Width="800"
     Height="450"
+    Icon="{x:Null}"
     d:DataContext="{d:DesignInstance Type=local:SimpleDialogViewModel,
                                      IsDesignTimeCreatable=True}"
     mc:Ignorable="d">

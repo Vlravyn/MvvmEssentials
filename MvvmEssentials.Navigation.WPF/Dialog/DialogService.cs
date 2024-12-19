@@ -95,15 +95,6 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             var content = serviceProvider.GetService(attribute.DestinationType);
 
-            object? title = null;
-
-            //get the title from the parameters
-            if (parameters != null && parameters.Count != 0)
-                title = parameters.FirstOrDefault(t => string.Equals(t.Key, "title", StringComparison.OrdinalIgnoreCase)).Value;
-
-            //show persistent dialog w
-            var DefaultDialogHost = new DefaultDialogHostWindow(title, content);
-
             //getting the result from the dialog box
             DialogResult result = DialogResult.None;
 
@@ -112,6 +103,10 @@ namespace MvvmEssentials.Navigation.WPF.Dialog
 
             var contentViewModel = fe?.DataContext as IDialogAware;
 
+            object? title = contentViewModel?.Title;
+
+            //show persistent dialog w
+            var DefaultDialogHost = new DefaultDialogHostWindow(title, content);
             if (contentViewModel is not null)
             {
                 contentViewModel.OnOpened(parameters);

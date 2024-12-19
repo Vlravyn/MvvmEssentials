@@ -10,6 +10,7 @@
     d:DataContext="{d:DesignInstance Type=dialogwindows:DefaultDialogHostViewModel,
                                      IsDesignTimeCreatable=True}"
     x:ClassModifier="internal"
+    Icon="{x:Null}"
     SizeToContent="WidthAndHeight"
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
